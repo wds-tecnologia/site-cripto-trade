@@ -49,6 +49,40 @@ export function Home() {
   const showLogin = searchParams.get("login") === "1"
   const canSubmit = email.trim() !== "" && password.trim() !== ""
 
+  const renderMarketGrid = (className?: string) => (
+    <div className={className}>
+      {marketItems.map((item) => {
+        const positive = item.variacao.startsWith("+")
+        return (
+          <article
+            key={item.nome}
+            className="bg-white rounded-xl border border-[#e7e7ea] p-4 shadow-sm"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <img
+                  src={getAssetIcon(item.nome)}
+                  alt={item.nome}
+                  className="size-5 object-contain"
+                />
+                <p className="text-sm font-medium text-[#2d2d33]">{item.nome}</p>
+              </div>
+              <span
+                className={`text-xs font-semibold ${
+                  positive ? "text-emerald-600" : "text-rose-500"
+                }`}
+              >
+                {item.variacao}
+              </span>
+            </div>
+            <p className="mt-2 text-base font-semibold text-[#1f1f23]">{item.preco}</p>
+            <p className="mt-2 text-xs text-[#8d8d95]">Volume (24h)</p>
+          </article>
+        )
+      })}
+    </div>
+  )
+
   return (
     <div className="w-full min-h-[calc(100vh-9rem)] bg-[#f4f4f5] rounded-2xl overflow-hidden border border-[#e5e5e7]">
       <div className="grid min-h-[calc(100vh-9rem)] lg:grid-cols-[1.1fr_1fr]">
@@ -69,33 +103,7 @@ export function Home() {
             />
           </div>
 
-          <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
-            {marketItems.map((item) => {
-              const positive = item.variacao.startsWith("+")
-              return (
-                <article
-                  key={item.nome}
-                  className="bg-white rounded-xl border border-[#e7e7ea] p-4 shadow-sm"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <img src={getAssetIcon(item.nome)} alt={item.nome} className="size-5 object-contain" />
-                      <p className="text-sm font-medium text-[#2d2d33]">{item.nome}</p>
-                    </div>
-                    <span
-                      className={`text-xs font-semibold ${
-                        positive ? "text-emerald-600" : "text-rose-500"
-                      }`}
-                    >
-                      {item.variacao}
-                    </span>
-                  </div>
-                  <p className="mt-2 text-base font-semibold text-[#1f1f23]">{item.preco}</p>
-                  <p className="mt-2 text-xs text-[#8d8d95]">Volume (24h)</p>
-                </article>
-              )
-            })}
-          </div>
+          {renderMarketGrid("grid grid-cols-2 xl:grid-cols-3 gap-4")}
         </section>
 
         <section className="flex items-center justify-center p-5 sm:p-8">
@@ -162,6 +170,11 @@ export function Home() {
                   alt="Trade em tempo real"
                   className="w-full h-[420px] object-cover sm:h-[560px]"
                 />
+              </div>
+
+              {/* Grade de moedas abaixo da imagem no mobile */}
+              <div className="mt-6 lg:hidden">
+                {renderMarketGrid("grid grid-cols-2 gap-4")}
               </div>
             </div>
           )}
