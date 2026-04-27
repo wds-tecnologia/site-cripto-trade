@@ -1,16 +1,997 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logobrowser.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <title>Vila Pay Invest | Investimento em criptomoedas</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vilapay Invest — Criptoativos com Segurança e Confiança</title>
+<link rel="icon" type="image/png" href="/logobrowser.png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F8F6F1;--bg2:#FFFFFF;--gold:#B8912A;--gold2:#D4A83A;--gold3:#7A5F18;
+  --gold-pale:#FDF8EC;--text:#1A1714;--text2:#4A4540;--text3:#8A8178;
+  --border:rgba(184,145,42,0.15);--border2:rgba(184,145,42,0.3);
+  --shadow:0 4px 24px rgba(26,23,20,0.08);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+
+/* NAVBAR */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(248,246,241,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;transition:box-shadow .3s}
+.navbar.scrolled{box-shadow:var(--shadow)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:500;color:var(--gold);letter-spacing:.04em;text-decoration:none}
+.nav-logo span{font-family:'Sora',sans-serif;font-size:.6rem;font-weight:400;letter-spacing:.2em;color:var(--text3);display:block;text-transform:uppercase;margin-top:-4px}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:.82rem;font-weight:400;letter-spacing:.04em;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.btn-nav{background:var(--gold)!important;color:#fff!important;padding:.5rem 1.3rem;border-radius:4px;font-size:.8rem!important;font-weight:500!important}
+.btn-nav:hover{background:var(--gold3)!important}
+.btn-login{border:1px solid var(--border2);color:var(--gold3)!important;padding:.48rem 1.15rem;border-radius:4px;font-size:.8rem!important;font-weight:500!important;background:var(--gold-pale)}
+.btn-login:hover{background:#FFF3D0;color:var(--gold3)!important}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 5% 5rem;position:relative;overflow:visible}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#F8F6F1 0%,#FDF8EC 50%,#F0EDE4 100%);z-index:0}
+.hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:.4;z-index:1}
+.hero-content{position:relative;z-index:2;max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(184,145,42,.08);border:1px solid var(--border2);color:var(--gold3);font-size:.72rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;padding:.4rem 1rem;margin-bottom:1.5rem}
+.hero-tag::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:500;line-height:1.2;color:var(--text);margin-bottom:1.25rem}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p{font-size:1rem;color:var(--text2);line-height:1.8;margin-bottom:2rem;max-width:480px}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{background:var(--gold);color:#fff;padding:.85rem 2rem;border-radius:4px;font-size:.88rem;font-weight:500;text-decoration:none;letter-spacing:.04em;transition:background .2s,transform .15s;display:inline-block}
+.btn-primary:hover{background:var(--gold3);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--gold);border:1px solid var(--border2);padding:.85rem 2rem;border-radius:4px;font-size:.88rem;text-decoration:none;transition:all .2s;display:inline-block}
+.btn-outline:hover{background:var(--gold-pale)}
+
+/* PHONE MOCKUP */
+.hero-phone{display:flex;justify-content:center;align-items:center}
+.hero-phone svg{width:100%;max-width:260px;height:auto;filter:drop-shadow(0 20px 40px rgba(26,23,20,0.15)) drop-shadow(0 6px 12px rgba(184,145,42,0.1))}
+@media(max-width:768px){.hero-phone svg{max-width:175px}}
+
+/* SECTIONS */
+section{padding:5rem 5%}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-tag{display:inline-block;background:rgba(184,145,42,.08);border:1px solid var(--border2);color:var(--gold3);font-size:.68rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;padding:.3rem .9rem;margin-bottom:.75rem}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:500;color:var(--text);margin-bottom:.75rem;line-height:1.3}
+.section-title em{font-style:normal;color:var(--gold)}
+.section-sub{font-size:.95rem;color:var(--text2);max-width:560px;line-height:1.8}
+
+/* COMO FUNCIONA */
+#como-funciona{background:var(--bg2)}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-top:3rem}
+.step-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:1.75rem 1.5rem;position:relative;transition:box-shadow .25s,transform .25s}
+.step-card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+.step-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:400;color:var(--border2);line-height:1;margin-bottom:1rem}
+.step-card h3{font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:.5rem}
+.step-card p{font-size:.85rem;color:var(--text2);line-height:1.7}
+.step-accent{position:absolute;top:0;left:0;width:3px;height:40px;background:var(--gold)}
+
+/* POR QUE NÓS */
+#por-que-nos{background:var(--bg)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem;margin-top:3rem}
+.feature-item{display:flex;gap:1rem;padding:1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;transition:border-color .25s}
+.feature-item:hover{border-color:var(--border2)}
+.feature-icon{width:40px;height:40px;background:var(--gold-pale);border:1px solid var(--border2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.feature-item h3{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.3rem}
+.feature-item p{font-size:.82rem;color:var(--text2);line-height:1.7}
+
+/* COMO COMEÇAR */
+#como-comprar{background:var(--bg2)}
+.comprar-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-top:3rem}
+.comprar-steps{display:flex;flex-direction:column;gap:1.25rem}
+.comprar-step{display:flex;gap:1rem;align-items:flex-start}
+.step-circle{width:32px;height:32px;background:var(--gold);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:600;flex-shrink:0;margin-top:2px}
+.comprar-step h4{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.25rem}
+.comprar-step p{font-size:.83rem;color:var(--text2);line-height:1.7}
+.comprar-visual{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:2rem}
+.mock-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.mock-dots{display:flex;gap:6px}
+.mock-dot{width:10px;height:10px;border-radius:50%}
+.mock-dot.r{background:#F08080}.mock-dot.y{background:#F0D080}.mock-dot.g{background:#80C080}
+.mock-title{font-size:.75rem;color:var(--text3)}
+.mock-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--border);font-size:.83rem}
+.mock-row:last-child{border-bottom:none}
+.mock-label{color:var(--text3)}.mock-val{color:var(--text);font-weight:500}.mock-val.gold{color:var(--gold)}
+.mock-badge{display:inline-block;background:rgba(80,180,120,.1);color:#2A8A50;border-radius:4px;padding:.2rem .6rem;font-size:.72rem;font-weight:500}
+
+/* SEGURANÇA */
+#seguranca{background:linear-gradient(135deg,#1A1714 0%,#2A2420 100%);color:#fff}
+#seguranca .section-title{color:#F8F6F1}
+#seguranca .section-tag{color:var(--gold2);border-color:rgba(184,145,42,.3)}
+#seguranca .section-sub{color:rgba(248,246,241,.7)}
+.sec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-top:3rem}
+.sec-card{background:rgba(255,255,255,.04);border:1px solid rgba(184,145,42,.2);border-radius:8px;padding:1.75rem 1.5rem;transition:background .25s}
+.sec-card:hover{background:rgba(255,255,255,.07)}
+.sec-card-icon{font-size:1.5rem;margin-bottom:1rem}
+.sec-card h3{font-size:.9rem;font-weight:600;color:#F8F6F1;margin-bottom:.4rem}
+.sec-card p{font-size:.82rem;color:rgba(248,246,241,.6);line-height:1.7}
+
+/* POLÍTICAS */
+#politicas{background:var(--bg)}
+.pol-nav{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:2rem 0 0;width:fit-content;flex-wrap:wrap}
+.pol-nav button{background:none;border:none;border-right:1px solid var(--border);color:var(--text2);cursor:pointer;font-family:'Sora',sans-serif;font-size:.78rem;padding:.75rem 1.5rem;text-transform:uppercase;letter-spacing:.1em;transition:all .2s}
+.pol-nav button:last-child{border-right:none}
+.pol-nav button:hover{background:var(--gold-pale);color:var(--gold)}
+.pol-nav button.active{background:var(--gold);color:#fff}
+.pol-content{background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-top:1.5rem}
+.pol-section{display:none;padding:2.5rem;animation:fadeUp .35s ease}
+.pol-section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.pol-doc-tag{display:inline-block;background:rgba(184,145,42,.08);border:1px solid var(--border2);color:var(--gold3);font-size:.65rem;font-weight:500;letter-spacing:.25em;padding:.25rem .8rem;text-transform:uppercase;margin-bottom:.75rem}
+.pol-doc-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:500;color:var(--text);line-height:1.3;margin-bottom:.4rem}
+.pol-doc-date{font-size:.75rem;color:var(--text3);margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.pol-article h2{font-family:'Playfair Display',serif;font-size:1rem;font-weight:500;color:var(--gold3);margin:2rem 0 .6rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+.pol-article h2 .num{color:var(--gold);margin-right:.4rem;font-family:'Sora',sans-serif;font-size:.82rem}
+.pol-article p{font-size:.88rem;color:var(--text2);margin-bottom:.75rem;line-height:1.8}
+.pol-article ul{list-style:none;margin:.5rem 0 1rem}
+.pol-article ul li{font-size:.88rem;color:var(--text2);padding:.3rem 0 .3rem 1.25rem;position:relative;border-bottom:1px solid rgba(184,145,42,.06);line-height:1.7}
+.pol-article ul li::before{content:'—';color:var(--gold);position:absolute;left:0;font-size:.8rem}
+.pol-highlight{background:rgba(184,145,42,.06);border-left:2px solid var(--gold);padding:.9rem 1.1rem;margin:1.25rem 0;font-size:.85rem;color:var(--text2);line-height:1.8}
+
+/* CONTATO */
+#contato{background:var(--bg2)}
+.contato-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
+.contato-info p{font-size:.93rem;color:var(--text2);line-height:1.8;margin-bottom:2rem}
+.contact-items{display:flex;flex-direction:column;gap:1rem}
+.contact-item{display:flex;align-items:center;gap:.75rem;font-size:.88rem;color:var(--text2)}
+.ci-icon{width:36px;height:36px;background:var(--gold-pale);border:1px solid var(--border2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.75rem;font-weight:500;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Sora',sans-serif;font-size:.88rem;padding:.75rem 1rem;outline:none;transition:border-color .2s;appearance:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold2)}
+.form-group textarea{height:110px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field-error{display:none;margin-top:.35rem;color:#B43A2F;font-size:.72rem;line-height:1.5}.form-group.invalid input{border-color:#B43A2F;background:#FFF7F5}.form-group.invalid .field-error{display:block}
+.input-wrap{position:relative}.input-wrap input{padding-right:3.2rem}.toggle-pass{position:absolute;right:0;top:0;height:100%;width:2.75rem;border:0;background:transparent;cursor:pointer;color:var(--text3);display:flex;align-items:center;justify-content:center;padding:0;transition:color .2s}.toggle-pass:hover{color:var(--gold3)}.toggle-pass svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.btn-submit{background:var(--gold);color:#fff;border:none;border-radius:4px;cursor:pointer;font-family:'Sora',sans-serif;font-size:.88rem;font-weight:500;padding:.9rem 2rem;width:100%;letter-spacing:.04em;transition:background .2s;margin-top:.5rem}
+.btn-submit:hover{background:var(--gold3)}
+
+/* ACESSO DO CLIENTE */
+#acesso-cliente{background:var(--bg)}
+.kyc-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:3rem;margin-top:3rem;align-items:start}
+.kyc-panel{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:2rem;box-shadow:var(--shadow)}
+.kyc-notice{background:rgba(184,145,42,.08);border:1px solid var(--border2);border-left:3px solid var(--gold);border-radius:6px;padding:1rem;margin-bottom:1.5rem;font-size:.82rem;color:var(--text2);line-height:1.7}
+.kyc-flow{display:flex;flex-direction:column;gap:1rem}
+.kyc-step{display:flex;gap:.9rem;align-items:flex-start;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--bg2)}
+.kyc-step-num{width:28px;height:28px;border-radius:50%;background:var(--gold-pale);border:1px solid var(--border2);color:var(--gold3);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;flex-shrink:0}
+.kyc-step h3{font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:.25rem}
+.kyc-step p{font-size:.8rem;color:var(--text2);line-height:1.65}
+.kyc-form{display:grid;gap:1rem;transition:opacity .35s ease,transform .35s ease}.kyc-form.is-resetting{opacity:.35;transform:translateY(6px)}
+.kyc-upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.upload-box{border:1px dashed var(--border2);background:var(--gold-pale);border-radius:10px;padding:1.25rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.upload-box:hover{border-color:var(--gold);background:#FFF7DE}
+.upload-box.uploaded{border-color:rgba(42,138,80,.5);background:rgba(42,138,80,.08)}
+.upload-box.uploaded .upload-icon{color:#2A8A50}
+.upload-box.invalid{border-color:rgba(180,58,47,.65);background:#FFF7F5}
+.upload-box.invalid .upload-icon,.upload-box.invalid .upload-error{color:#B43A2F}
+.upload-box input{display:none}
+.upload-icon{font-size:1.65rem;margin-bottom:.5rem}
+.upload-box strong{font-size:.85rem;color:var(--text);display:block}
+.upload-box span{font-size:.72rem;color:var(--text3);display:block;margin-top:.25rem}
+.upload-error{display:none;margin-top:.55rem;font-size:.7rem;color:#B43A2F;line-height:1.4}
+.upload-box.invalid .upload-error{display:block}
+.upload-preview{display:none;margin-top:.75rem;width:100%;font-size:.7rem;color:#2A8A50;line-height:1.45;word-break:break-word}
+.upload-preview img{display:block;width:52px;height:52px;object-fit:cover;border-radius:8px;margin:.25rem auto .4rem;border:1px solid rgba(42,138,80,.25)}
+.upload-box.uploaded .upload-preview{display:block}
+.kyc-status{border:1px solid rgba(42,138,80,.2);background:rgba(42,138,80,.07);border-radius:10px;padding:1rem;margin-top:1rem}
+.kyc-status strong{font-size:.82rem;color:#2A8A50}
+.kyc-status p{font-size:.78rem;color:var(--text2);margin-top:.25rem;line-height:1.6}
+.btn-kyc{background:var(--gold);color:#fff;border:none;border-radius:4px;cursor:pointer;font-family:'Sora',sans-serif;font-size:.88rem;font-weight:500;padding:.9rem 2rem;width:100%;letter-spacing:.04em;transition:background .2s;margin-top:.25rem}
+.btn-kyc:hover{background:var(--gold3)}
+.btn-kyc:disabled{cursor:not-allowed;opacity:.82}
+
+/* FOOTER */
+.site-footer{background:#14110E;color:rgba(248,246,241,.6);padding:4rem 5% 2rem}
+.footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(184,145,42,.12)}
+.footer-brand .logo-f{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:500;color:var(--gold2);display:block;margin-bottom:.25rem}
+.footer-brand p{font-size:.82rem;line-height:1.7;margin-top:.75rem;color:rgba(248,246,241,.5)}
+.footer-col h4{font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2);margin-bottom:1rem}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:.5rem}
+.footer-col ul li a{color:rgba(248,246,241,.5);text-decoration:none;font-size:.82rem;transition:color .2s}
+.footer-col ul li a:hover{color:var(--gold2)}
+.footer-bottom{max-width:1100px;margin:1.5rem auto 0;display:flex;justify-content:space-between;align-items:center;font-size:.73rem;color:rgba(248,246,241,.3)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero{padding:88px 5% 3rem}
+  .hero-content{grid-template-columns:1fr;gap:1.5rem}
+  .hero-phone{margin-top:0}
+  .comprar-grid,.contato-grid{grid-template-columns:1fr;gap:2rem}
+  .kyc-grid,.kyc-upload-grid{grid-template-columns:1fr;gap:1rem}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="#" data-scroll="inicio" class="nav-logo">Vilapay Invest<span>Criptoativos &amp; Operações Digitais</span></a>
+  <ul class="nav-links">
+    <li><a href="#" data-scroll="como-funciona">Como funciona</a></li>
+    <li><a href="#" data-scroll="por-que-nos">Por que nós</a></li>
+    <li><a href="#" data-scroll="seguranca">Segurança</a></li>
+    <li><a href="#" data-scroll="politicas">Políticas</a></li>
+    <li><a href="#" data-scroll="contato">Contato</a></li>
+    <li><a href="/login.html" class="btn-login">Login</a></li>
+    <li><a href="#" data-scroll="cadastro-panel" class="btn-nav">Criar cadastro</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-content">
+    <div>
+      <div class="hero-tag">Operação 100% regulamentada</div>
+      <h1>Compre e venda <em>criptoativos</em> com segurança e os melhores preços.</h1>
+      <p>A Vilapay Invest conecta você ao mercado de criptoativos com preços competitivos, suporte dedicado e total segurança em cada transação. Simples assim.</p>
+      <div class="hero-btns">
+        <a href="#" data-scroll="cadastro-panel" class="btn-primary">Criar cadastro</a>
+        <a href="#" data-scroll="como-funciona" class="btn-outline">Como funciona</a>
+      </div>
+    </div>
+    <div class="hero-phone">
+      <svg viewBox="0 0 270 560" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="pg" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#C8C8C8"/><stop offset="40%" stop-color="#F0F0F0"/><stop offset="100%" stop-color="#A8A8A8"/>
+          </linearGradient>
+          <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#C9A030"/><stop offset="100%" stop-color="#8A6518"/>
+          </linearGradient>
+          <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#D4A83A"/><stop offset="100%" stop-color="#A07020"/>
+          </linearGradient>
+          <clipPath id="sc"><rect x="15" y="20" width="240" height="520" rx="32"/></clipPath>
+        </defs>
+        <!-- frame -->
+        <rect x="1" y="1" width="268" height="558" rx="42" fill="url(#pg)" stroke="#B0B0B0" stroke-width="1"/>
+        <rect x="4" y="4" width="262" height="552" rx="40" fill="#E4E4E4"/>
+        <rect x="15" y="20" width="240" height="520" rx="32" fill="#F8F5EE"/>
+        <g clip-path="url(#sc)">
+          <!-- header -->
+          <rect x="15" y="20" width="240" height="148" fill="url(#hg)"/>
+          <rect x="32" y="34" width="152" height="20" rx="10" fill="rgba(255,255,255,0.15)"/>
+          <circle cx="46" cy="44" r="5.5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.3"/>
+          <line x1="50" y1="48" x2="52" y2="50" stroke="rgba(255,255,255,0.5)" stroke-width="1.3" stroke-linecap="round"/>
+          <text x="76" y="48" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,0.55)">Pesquisa ativos</text>
+          <text x="32" y="78" font-family="Georgia,serif" font-size="18" font-weight="600" fill="white">Olá, Cliente</text>
+          <text x="32" y="100" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.65)">Saldo total</text>
+          <text x="32" y="118" font-family="sans-serif" font-size="18" font-weight="700" fill="white">R$ 84.320,00</text>
+          <text x="32" y="134" font-family="sans-serif" font-size="8.5" fill="#90EE90">▲ 2,4%  |  <tspan fill="rgba(255,255,255,0.5)">0,12 BTC acumulado</tspan></text>
+          <!-- body -->
+          <rect x="15" y="168" width="240" height="372" fill="#F8F5EE"/>
+          <!-- Dinheiro -->
+          <rect x="24" y="176" width="222" height="40" rx="9" fill="white" stroke="rgba(184,145,42,0.18)" stroke-width="0.8"/>
+          <circle cx="44" cy="196" r="10" fill="#FDF0CC"/>
+          <text x="44" y="200" font-family="sans-serif" font-size="11" font-weight="700" fill="#A07020" text-anchor="middle">$</text>
+          <text x="62" y="192" font-family="sans-serif" font-size="9" font-weight="500" fill="#1A1714">Dinheiro</text>
+          <text x="62" y="205" font-family="sans-serif" font-size="8" fill="#8A7860">Saldo em reais</text>
+          <text x="234" y="200" font-family="sans-serif" font-size="9" font-weight="600" fill="#1A1714" text-anchor="end">R$ 52.100,00</text>
+          <!-- Cripto -->
+          <rect x="24" y="222" width="222" height="40" rx="9" fill="white" stroke="rgba(184,145,42,0.18)" stroke-width="0.8"/>
+          <circle cx="44" cy="242" r="10" fill="#FFF5DC"/>
+          <text x="44" y="247" font-family="sans-serif" font-size="12" font-weight="700" fill="#B8912A" text-anchor="middle">₿</text>
+          <text x="62" y="238" font-family="sans-serif" font-size="9" font-weight="500" fill="#1A1714">Cripto</text>
+          <text x="62" y="251" font-family="sans-serif" font-size="8" fill="#8A7860">Bitcoin, ETH e mais</text>
+          <text x="234" y="246" font-family="sans-serif" font-size="9" font-weight="600" fill="#1A1714" text-anchor="end">R$ 32.220,00</text>
+          <!-- mercado label -->
+          <text x="24" y="282" font-family="sans-serif" font-size="10" font-weight="600" fill="#3A3028">Mercado cripto</text>
+          <text x="234" y="282" font-family="sans-serif" font-size="9" fill="#B8912A" text-anchor="end">ver todos &gt;</text>
+
+          <!-- BTC row: [ícone][nome/subtítulo][gráfico centro][preço/% direita] -->
+          <rect x="24" y="290" width="222" height="40" rx="8" fill="white" stroke="rgba(184,145,42,0.15)" stroke-width="0.8"/>
+          <circle cx="43" cy="310" r="10" fill="#F7931A"/>
+          <text x="43" y="314" font-family="sans-serif" font-size="9" font-weight="700" fill="white" text-anchor="middle">₿</text>
+          <text x="59" y="305" font-family="sans-serif" font-size="9" font-weight="600" fill="#1A1714">BTC</text>
+          <text x="59" y="317" font-family="sans-serif" font-size="7.5" fill="#8A7860">Bitcoin</text>
+          <clipPath id="cBTC"><rect x="118" y="292" width="60" height="36"/></clipPath>
+          <polyline clip-path="url(#cBTC)"
+            points="120,324 124,320 128,321 132,317 136,319 140,315 144,317 148,313 152,315 156,311 160,313 164,309 168,311 172,307 176,305"
+            fill="none" stroke="#2A9A50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="236" y="305" font-family="sans-serif" font-size="8.5" font-weight="700" fill="#1A1714" text-anchor="end">R$ 578.400</text>
+          <text x="236" y="317" font-family="sans-serif" font-size="7.5" fill="#2A9A50" text-anchor="end">▲ 2,84%</text>
+
+          <!-- ETH row -->
+          <rect x="24" y="336" width="222" height="40" rx="8" fill="white" stroke="rgba(184,145,42,0.15)" stroke-width="0.8"/>
+          <circle cx="43" cy="356" r="10" fill="#627EEA"/>
+          <text x="43" y="361" font-family="sans-serif" font-size="11" font-weight="700" fill="white" text-anchor="middle">Ξ</text>
+          <text x="59" y="351" font-family="sans-serif" font-size="9" font-weight="600" fill="#1A1714">ETH</text>
+          <text x="59" y="363" font-family="sans-serif" font-size="7.5" fill="#8A7860">Ethereum</text>
+          <clipPath id="cETH"><rect x="118" y="338" width="60" height="36"/></clipPath>
+          <polyline clip-path="url(#cETH)"
+            points="120,368 124,365 128,366 132,362 136,364 140,360 144,362 148,358 152,360 156,356 160,358 164,354 168,356 172,352 176,350"
+            fill="none" stroke="#2A9A50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="236" y="351" font-family="sans-serif" font-size="8.5" font-weight="700" fill="#1A1714" text-anchor="end">R$ 13.820</text>
+          <text x="236" y="363" font-family="sans-serif" font-size="7.5" fill="#2A9A50" text-anchor="end">▲ 1,92%</text>
+
+          <!-- USDT row -->
+          <rect x="24" y="382" width="222" height="40" rx="8" fill="white" stroke="rgba(184,145,42,0.15)" stroke-width="0.8"/>
+          <circle cx="43" cy="402" r="10" fill="#26A17B"/>
+          <text x="43" y="406" font-family="sans-serif" font-size="6.5" font-weight="700" fill="white" text-anchor="middle">USDT</text>
+          <text x="59" y="397" font-family="sans-serif" font-size="9" font-weight="600" fill="#1A1714">USDT</text>
+          <text x="59" y="409" font-family="sans-serif" font-size="7.5" fill="#8A7860">Tether</text>
+          <clipPath id="cUSD"><rect x="118" y="384" width="60" height="36"/></clipPath>
+          <polyline clip-path="url(#cUSD)"
+            points="120,402 124,402 128,401 132,402 136,401 140,402 144,401 148,402 152,401 156,402 160,401 164,402 168,401 172,402 176,401"
+            fill="none" stroke="#8A7860" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="236" y="397" font-family="sans-serif" font-size="8.5" font-weight="700" fill="#1A1714" text-anchor="end">R$ 5,85</text>
+          <text x="236" y="409" font-family="sans-serif" font-size="7.5" fill="#8A7860" text-anchor="end">Estável</text>
+          <!-- botões -->
+          <rect x="24" y="432" width="106" height="34" rx="9" fill="url(#bg2)"/>
+          <text x="77" y="453" font-family="sans-serif" font-size="10" font-weight="600" fill="white" text-anchor="middle">Comprar/Vender</text>
+          <rect x="140" y="432" width="106" height="34" rx="9" fill="#FDF0CC" stroke="#D4A83A" stroke-width="0.8"/>
+          <text x="193" y="453" font-family="sans-serif" font-size="10" font-weight="600" fill="#7A5F18" text-anchor="middle">Transferir/Pix</text>
+          <!-- bottom nav -->
+          <rect x="15" y="494" width="240" height="46" fill="white"/>
+          <rect x="52" y="502" width="28" height="3" rx="1.5" fill="#B8912A"/>
+          <rect x="52" y="507" width="18" height="3" rx="1.5" fill="#DDD0A0"/>
+          <rect x="52" y="512" width="24" height="3" rx="1.5" fill="#DDD0A0"/>
+          <text x="66" y="530" font-family="sans-serif" font-size="8" fill="#B8912A" text-anchor="middle" font-weight="600">Início</text>
+          <rect x="120" y="502" width="18" height="18" rx="4" fill="none" stroke="#8A7860" stroke-width="1.2"/>
+          <rect x="123" y="505" width="12" height="12" rx="2" fill="#E8E0CC"/>
+          <text x="129" y="530" font-family="sans-serif" font-size="8" fill="#8A7860" text-anchor="middle">Portfólio</text>
+          <rect x="184" y="514" width="6" height="8" rx="1" fill="#8A7860"/>
+          <rect x="192" y="509" width="6" height="13" rx="1" fill="#8A7860"/>
+          <rect x="200" y="504" width="6" height="18" rx="1" fill="#8A7860"/>
+          <text x="196" y="530" font-family="sans-serif" font-size="8" fill="#8A7860" text-anchor="middle">Mercados</text>
+        </g>
+        <!-- notch -->
+        <rect x="110" y="24" width="50" height="10" rx="5" fill="#1A1714"/>
+        <!-- botões físicos -->
+        <rect x="2" y="135" width="3.5" height="26" rx="1.75" fill="#A8A8A8"/>
+        <rect x="2" y="168" width="3.5" height="26" rx="1.75" fill="#A8A8A8"/>
+        <rect x="264.5" y="160" width="3.5" height="42" rx="1.75" fill="#A8A8A8"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="como-funciona">
+  <div class="section-inner">
+    <div class="section-tag">Processo</div>
+    <h2 class="section-title">Como você <em>começa a operar</em> conosco</h2>
+    <p class="section-sub">Um processo simples, rápido e seguro — do cadastro à sua primeira operação com criptoativos.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-accent"></div>
+        <div class="step-num">01</div>
+        <h3>Faça seu cadastro</h3>
+        <p>Preencha seus dados e envie a documentação. Nossa equipe analisa tudo com agilidade e te dá um retorno rápido.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-accent"></div>
+        <div class="step-num">02</div>
+        <h3>Acesse os melhores preços</h3>
+        <p>Você tem acesso a criptoativos com preços competitivos e condições diferenciadas, sem precisar navegar sozinho pelas exchanges.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-accent"></div>
+        <div class="step-num">03</div>
+        <h3>Opere com segurança</h3>
+        <p>Compre e venda criptoativos de forma simples, com suporte dedicado e total transparência em cada transação.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-accent"></div>
+        <div class="step-num">04</div>
+        <h3>Cresça sem limite</h3>
+        <p>Conforme você opera, seu limite aumenta progressivamente — mais acesso e mais flexibilidade para você investir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUE NÓS -->
+<section id="por-que-nos">
+  <div class="section-inner">
+    <div class="section-tag">Diferenciais</div>
+    <h2 class="section-title">Por que escolher a <em>Vilapay Invest</em></h2>
+    <p class="section-sub">Você merece operar com quem oferece segurança, preços justos e um atendimento que respeita o seu tempo e o seu dinheiro.</p>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🛡️</div>
+        <div>
+          <h3>Seu dinheiro protegido</h3>
+          <p>Você opera em um ambiente seguro, com verificação completa de todos os usuários e monitoramento ativo das transações.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📊</div>
+        <div>
+          <h3>Limite que cresce com você</h3>
+          <p>Quanto mais você opera, maior é o seu limite. Sem burocracia desnecessária — seu histórico fala por você.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🤝</div>
+        <div>
+          <h3>Comunidade de confiança</h3>
+          <p>Quem já opera conosco indica para quem confia. Isso garante um ambiente com clientes sérios e comprometidos.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">⚡</div>
+        <div>
+          <h3>Preços competitivos</h3>
+          <p>Você acessa criptoativos com condições de mercado diferenciadas, sem precisar comparar dezenas de plataformas sozinho.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">⚖️</div>
+        <div>
+          <h3>100% dentro da lei</h3>
+          <p>Operamos em total conformidade com a legislação vigente. Você tem a segurança jurídica que uma operação séria exige.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💬</div>
+        <div>
+          <h3>Atendimento direto e transparente</h3>
+          <p>Você sempre sabe o que está acontecendo. Qualquer dúvida ou situação, nossa equipe está disponível para te dar suporte.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO COMEÇAR -->
+<section id="como-comprar">
+  <div class="section-inner">
+    <div class="section-tag">Passo a passo</div>
+    <h2 class="section-title">Como <em>começar a operar</em> em minutos</h2>
+      <p class="section-sub">Se preferir ir direto, acesse agora a área de cadastro e verificação da Vila Pay Invest.</p>
+      <div class="hero-btns" style="margin-top:1.5rem">
+        <a href="#" data-scroll="cadastro-panel" class="btn-primary">Abrir área de cadastro</a>
+      </div>
+    <div class="comprar-grid">
+      <div class="comprar-steps">
+        <div class="comprar-step">
+          <div class="step-circle">1</div>
+          <div><h4>Solicite seu acesso</h4><p>Preencha o formulário abaixo. Nossa equipe entra em contato rapidamente para dar início ao seu cadastro.</p></div>
+        </div>
+        <div class="comprar-step">
+          <div class="step-circle">2</div>
+          <div><h4>Envie sua documentação</h4><p>Documento com foto e comprovante de residência. Um processo rápido que garante a segurança de todos.</p></div>
+        </div>
+        <div class="comprar-step">
+          <div class="step-circle">3</div>
+          <div><h4>Comece a operar</h4><p>Após aprovação, você já pode comprar e vender criptoativos com preços competitivos e suporte dedicado.</p></div>
+        </div>
+        <div class="comprar-step">
+          <div class="step-circle">4</div>
+          <div><h4>Expanda seus limites</h4><p>Com o tempo, seu limite cresce conforme seu histórico de operações. Sem burocracia extra.</p></div>
+        </div>
+      </div>
+      <div class="comprar-visual">
+        <div class="mock-header">
+          <div class="mock-dots"><div class="mock-dot r"></div><div class="mock-dot y"></div><div class="mock-dot g"></div></div>
+          <div class="mock-title">Vilapay Invest · Sua Conta</div>
+        </div>
+        <div class="mock-row"><span class="mock-label">Ativo</span><span class="mock-val">Bitcoin (BTC)</span></div>
+        <div class="mock-row"><span class="mock-label">Tipo de operação</span><span class="mock-val">Compra</span></div>
+        <div class="mock-row"><span class="mock-label">Status</span><span class="mock-val"><span class="mock-badge">Verificado ✓</span></span></div>
+        <div class="mock-row"><span class="mock-label">Limite disponível</span><span class="mock-val gold">R$ 25.000,00</span></div>
+        <div class="mock-row"><span class="mock-label">Spread</span><span class="mock-val">Conforme tabela</span></div>
+        <div class="mock-row"><span class="mock-label">Transferência</span><span class="mock-val">Apenas titular</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEGURANÇA -->
+<section id="seguranca">
+  <div class="section-inner">
+    <div class="section-tag">Proteção</div>
+    <h2 class="section-title">Você opera com <em>total segurança</em></h2>
+    <p class="section-sub">Cada detalhe da nossa operação foi pensado para proteger você e garantir que seu dinheiro esteja sempre em boas mãos.</p>
+    <div class="sec-grid">
+      <div class="sec-card"><div class="sec-card-icon">🔐</div><h3>Identidade verificada</h3><p>Todos os usuários são verificados antes de operar. Você nunca vai lidar com pessoas mal intencionadas.</p></div>
+      <div class="sec-card"><div class="sec-card-icon">🚫</div><h3>Transações apenas suas</h3><p>Aceitamos somente transferências do próprio titular. Seu dinheiro chega e sai sempre com rastreabilidade total.</p></div>
+      <div class="sec-card"><div class="sec-card-icon">📡</div><h3>Monitoramento ativo</h3><p>Sua conta é acompanhada em tempo real. Qualquer movimentação fora do padrão é identificada e tratada rapidamente.</p></div>
+      <div class="sec-card"><div class="sec-card-icon">📜</div><h3>Operação regularizada</h3><p>Você opera em uma plataforma que segue todas as exigências legais, incluindo normas de prevenção à lavagem de dinheiro.</p></div>
+      <div class="sec-card"><div class="sec-card-icon">🔔</div><h3>Transparência total</h3><p>Qualquer situação relevante na sua conta é comunicada formalmente. Você nunca fica no escuro sobre o que acontece.</p></div>
+      <div class="sec-card"><div class="sec-card-icon">⚙️</div><h3>Tecnologia sempre evoluindo</h3><p>Investimos constantemente em melhorias para que sua experiência seja cada vez mais segura, ágil e sem fricções.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- POLÍTICAS -->
+<section id="politicas">
+  <div class="section-inner">
+    <div class="section-tag">Transparência</div>
+    <h2 class="section-title">Termos, Políticas e <em>Regulamento</em></h2>
+    <p class="section-sub">Acreditamos que a transparência é a base de qualquer relação comercial sólida. Conheça nossas regras e como trabalhamos.</p>
+    <div class="pol-nav">
+      <button class="active" onclick="polShow('termos',this)">Termos de Uso</button>
+      <button onclick="polShow('compliance',this)">Compliance</button>
+      <button onclick="polShow('regulamento',this)">Regulamento do Cliente</button>
+    </div>
+    <div class="pol-content">
+      <!-- TERMOS -->
+      <div id="termos" class="pol-section active">
+        <div class="pol-doc-tag">Documento Legal</div>
+        <div class="pol-doc-title">Termos de Uso</div>
+        <div class="pol-doc-date">Última atualização: Abril de 2025 · Versão 1.0</div>
+        <div class="pol-article">
+          <h2><span class="num">1.</span> Aceitação dos Termos</h2>
+          <p>Ao se cadastrar e utilizar os serviços disponibilizados pela Vilapay Invest, o usuário declara ter lido, compreendido e concordado integralmente com os presentes Termos de Uso.</p>
+          <h2><span class="num">2.</span> Sobre a Vilapay Invest</h2>
+          <p>A Vilapay Invest é uma empresa especializada na compra e venda de criptoativos, operando com as melhores condições de mercado para nossos clientes.</p>
+          <h2><span class="num">3.</span> Elegibilidade</h2>
+          <ul>
+            <li>Ser pessoa física maior de 18 anos ou pessoa jurídica legalmente constituída;</li>
+            <li>Residir ou estar estabelecido no território nacional;</li>
+            <li>Possuir cadastro aprovado mediante o processo de verificação de identidade (KYC);</li>
+            <li>Não estar impedido por lei de realizar operações com criptoativos.</li>
+          </ul>
+          <h2><span class="num">4.</span> Cadastro e Verificação (KYC)</h2>
+          <ul>
+            <li>Documento de identificação oficial com foto (RG, CNH ou passaporte);</li>
+            <li>Comprovante de residência recente (emitido nos últimos 90 dias);</li>
+            <li>Informações pessoais e financeiras compatíveis com o perfil de uso.</li>
+          </ul>
+          <h2><span class="num">5.</span> Pagamentos e Transferências</h2>
+          <div class="pol-highlight">Não são aceitas transferências realizadas por terceiros em nome do cliente. Todas as movimentações devem ser originadas exclusivamente de conta de titularidade do próprio cliente cadastrado.</div>
+          <h2><span class="num">6.</span> Encerramento e Suspensão de Conta</h2>
+          <ul>
+            <li>Irregularidades no processo de KYC;</li>
+            <li>Operações em desconformidade com estes Termos;</li>
+            <li>Uso da plataforma para fins ilícitos ou suspeitos;</li>
+            <li>Recebimento de transferências de terceiros não autorizados.</li>
+          </ul>
+          <h2><span class="num">7.</span> Alterações nos Termos</h2>
+          <p>Estes Termos poderão ser alterados a qualquer momento. A continuidade do uso implica aceitação tácita das novas condições.</p>
+        </div>
+      </div>
+      <!-- COMPLIANCE -->
+      <div id="compliance" class="pol-section">
+        <div class="pol-doc-tag">Governança</div>
+        <div class="pol-doc-title">Política de Compliance e Como Trabalhamos</div>
+        <div class="pol-doc-date">Última atualização: Abril de 2025 · Versão 1.0</div>
+        <div class="pol-article">
+          <h2><span class="num">1.</span> Nosso Compromisso</h2>
+          <p>A Vilapay Invest conduz suas operações com base em princípios de transparência, integridade e conformidade regulatória.</p>
+          <h2><span class="num">2.</span> Prevenção à Lavagem de Dinheiro (PLD)</h2>
+          <ul>
+            <li>Verificação de identidade obrigatória para todos os clientes (KYC);</li>
+            <li>Monitoramento contínuo das transações realizadas;</li>
+            <li>Identificação e análise de padrões de movimentação atípicos;</li>
+            <li>Comunicação às autoridades competentes nos casos previstos em lei.</li>
+          </ul>
+          <h2><span class="num">3.</span> Controles Internos de Risco</h2>
+          <ul>
+            <li><strong style="color:var(--gold3);font-weight:500;">KYC estruturado:</strong> coleta e validação de documentação completa antes de qualquer operação;</li>
+            <li><strong style="color:var(--gold3);font-weight:500;">Limites graduais:</strong> concessão progressiva conforme o perfil financeiro do cliente;</li>
+            <li><strong style="color:var(--gold3);font-weight:500;">Política de terceiros:</strong> vedação expressa a transferências de contas de terceiros;</li>
+            <li><strong style="color:var(--gold3);font-weight:500;">Monitoramento:</strong> acompanhamento das movimentações para detecção de anomalias;</li>
+            <li><strong style="color:var(--gold3);font-weight:500;">Melhoria contínua:</strong> revisão periódica dos processos com base em ocorrências.</li>
+          </ul>
+          <h2><span class="num">4.</span> Admissão de Clientes</h2>
+          <p>Aceitamos novos clientes por indicação de clientes ativos ou cadastro direto pelo site, sempre com análise criteriosa.</p>
+          <div class="pol-highlight">Clientes com inconsistências cadastrais terão seus acessos suspensos imediatamente.</div>
+          <h2><span class="num">5.</span> Canal de Denúncias</h2>
+          <p>Clientes que identificarem irregularidades podem nos contatar pelos canais oficiais. Todas as comunicações são tratadas com confidencialidade.</p>
+        </div>
+      </div>
+      <!-- REGULAMENTO -->
+      <div id="regulamento" class="pol-section">
+        <div class="pol-doc-tag">Relacionamento</div>
+        <div class="pol-doc-title">Regulamento Interno do Cliente</div>
+        <div class="pol-doc-date">Última atualização: Abril de 2025 · Versão 1.0</div>
+        <div class="pol-article">
+          <h2><span class="num">1.</span> Finalidade</h2>
+          <p>Este Regulamento estabelece os direitos e deveres dos clientes que operam com a Vilapay Invest, garantindo uma relação comercial transparente e segura.</p>
+          <h2><span class="num">2.</span> Deveres do Cliente</h2>
+          <ul>
+            <li>Fornecer informações verdadeiras e atualizadas no cadastro;</li>
+            <li>Comunicar qualquer alteração nos dados pessoais ou financeiros;</li>
+            <li>Realizar transferências exclusivamente de conta de sua própria titularidade;</li>
+            <li>Não utilizar a plataforma para fins ilícitos;</li>
+            <li>Respeitar os limites operacionais estabelecidos para o seu perfil.</li>
+          </ul>
+          <h2><span class="num">3.</span> Transferências — Regra Fundamental</h2>
+          <div class="pol-highlight">É expressamente proibido o recebimento de valores transferidos por terceiros. Toda transferência deve ser realizada pelo titular da conta cadastrada. O descumprimento resultará em notificação formal e poderá ocasionar suspensão ou encerramento da conta.</div>
+          <h2><span class="num">4.</span> Direitos do Cliente</h2>
+          <ul>
+            <li>Receber atendimento claro, transparente e respeitoso;</li>
+            <li>Ser notificado formalmente em caso de ocorrências na sua conta;</li>
+            <li>Ter seus dados pessoais tratados com confidencialidade (LGPD).</li>
+          </ul>
+          <h2><span class="num">5.</span> Penalidades</h2>
+          <ul>
+            <li>Notificação formal por escrito;</li>
+            <li>Suspensão temporária ou definitiva da conta;</li>
+            <li>Encerramento do relacionamento comercial.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACESSO E CADASTRO -->
+<section id="acesso-cliente">
+  <div class="section-inner">
+    <div class="section-tag">Cadastro</div>
+    <h2 class="section-title">Abra sua conta com <em>cadastro seguro</em></h2>
+    <p class="section-sub">Envie seus dados e documentos para iniciar sua análise cadastral e operar com a Vila Pay Invest.</p>
+
+    <div class="kyc-grid">
+      <div>
+        <div class="kyc-flow">
+          <div class="kyc-step">
+            <div class="kyc-step-num">1</div>
+            <div><h3>Dados cadastrais</h3><p>Informe seus dados principais para abertura da solicitação de conta.</p></div>
+          </div>
+          <div class="kyc-step">
+            <div class="kyc-step-num">2</div>
+            <div><h3>Documentos de identidade</h3><p>Anexe documento com foto e comprovante de residência para análise de conformidade.</p></div>
+          </div>
+          <div class="kyc-step">
+            <div class="kyc-step-num">3</div>
+            <div><h3>Selfie de segurança</h3><p>Confirme a titularidade da conta com uma foto nítida do titular.</p></div>
+          </div>
+          <div class="kyc-step">
+            <div class="kyc-step-num">4</div>
+            <div><h3>Análise cadastral</h3><p>Nossa equipe avalia as informações e retorna pelos canais oficiais da Vila Pay Invest.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kyc-panel" id="cadastro-panel">
+        <div class="kyc-notice">
+          <strong>Cadastro Vila Pay Invest:</strong> envie seus dados e documentos para abertura de conta e análise de conformidade.
+        </div>
+
+        <div class="kyc-form">
+          <div class="form-row">
+            <div class="form-group" id="cadNomeGroup"><label>Nome completo</label><input type="text" id="cadNome" placeholder="Nome do cliente"><span class="field-error">Informe nome e sobrenome.</span></div>
+            <div class="form-group" id="cadCpfGroup"><label>CPF</label><input type="text" id="cadCpf" placeholder="000.000.000-00" inputmode="numeric" maxlength="14"><span class="field-error">Informe um CPF válido.</span></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" id="cadEmailGroup"><label>E-mail</label><input type="email" id="cadEmail" placeholder="cliente@email.com"><span class="field-error">Informe um e-mail válido.</span></div>
+            <div class="form-group" id="cadPhoneGroup"><label>Telefone</label><input type="text" id="cadPhone" placeholder="(00) 00000-0000" inputmode="numeric" maxlength="15"><span class="field-error">Informe um telefone válido.</span></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" id="cadPassGroup"><label>Senha</label><div class="input-wrap"><input type="password" id="cadPass" placeholder="Crie uma senha" minlength="6"><button type="button" class="toggle-pass" data-target="cadPass" aria-label="Mostrar senha"></button></div><span class="field-error">A senha deve ter pelo menos 6 caracteres.</span></div>
+            <div class="form-group" id="cadConfirmPassGroup"><label>Confirmação de senha</label><div class="input-wrap"><input type="password" id="cadConfirmPass" placeholder="Repita a senha" minlength="6"><button type="button" class="toggle-pass" data-target="cadConfirmPass" aria-label="Mostrar senha"></button></div><span class="field-error">As senhas precisam ser iguais.</span></div>
+          </div>
+
+          <div class="kyc-upload-grid">
+            <label class="upload-box">
+              <input type="file" id="docUpload" accept="image/*,.pdf">
+              <div class="upload-icon">🪪</div>
+              <strong>Documento com foto</strong>
+              <span>RG, CNH ou passaporte</span>
+              <div class="upload-error">Anexe este documento.</div>
+              <div class="upload-preview"></div>
+            </label>
+            <label class="upload-box">
+              <input type="file" id="proofUpload" accept="image/*,.pdf">
+              <div class="upload-icon">🏠</div>
+              <strong>Comprovante</strong>
+              <span>Residência dos últimos 90 dias</span>
+              <div class="upload-error">Anexe este comprovante.</div>
+              <div class="upload-preview"></div>
+            </label>
+            <label class="upload-box">
+              <input type="file" id="selfieUpload" accept="image/*">
+              <div class="upload-icon">🤳</div>
+              <strong>Selfie de segurança</strong>
+              <span>Foto nítida do titular</span>
+              <div class="upload-error">Anexe a selfie de segurança.</div>
+              <div class="upload-preview"></div>
+            </label>
+            <label class="upload-box">
+              <input type="file" id="incomeUpload" accept="image/*,.pdf">
+              <div class="upload-icon">📄</div>
+              <strong>Dados financeiros</strong>
+              <span>Obrigatório para análise cadastral</span>
+              <div class="upload-error">Anexe os dados financeiros.</div>
+              <div class="upload-preview"></div>
+            </label>
+          </div>
+
+          <button class="btn-kyc" id="btnKyc">Enviar cadastro para análise</button>
+          <div class="kyc-status" id="kycStatus">
+            <strong>Status do cadastro: aguardando documentos</strong>
+            <p>Preencha os dados e selecione os arquivos para iniciar sua análise cadastral.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="section-inner">
+    <div class="section-tag">Contato</div>
+    <h2 class="section-title">Pronto para <em>começar a operar?</em></h2>
+    <div class="contato-grid">
+      <div class="contato-info">
+        <p>Preencha o formulário e nossa equipe entra em contato em breve. É rápido, sem compromisso — e o primeiro passo para você ter acesso a criptoativos com segurança e preços diferenciados.</p>
+        <div class="contact-items">
+          <div class="contact-item"><div class="ci-icon">🕐</div><span>Atendimento em dias úteis, horário comercial</span></div>
+          <div class="contact-item"><div class="ci-icon">📍</div><span>Operação 100% digital — Brasil</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="form-row">
+          <div class="form-group"><label>Nome completo</label><input type="text" placeholder="Seu nome"></div>
+          <div class="form-group"><label>CPF / CNPJ</label><input type="text" placeholder="000.000.000-00"></div>
+        </div>
+        <div class="form-group"><label>E-mail</label><input type="email" placeholder="seu@email.com"></div>
+        <div class="form-group"><label>WhatsApp</label><input type="text" placeholder="(27) 99999-9999"></div>
+        <div class="form-group">
+          <label>Como ficou sabendo da Vilapay Invest?</label>
+          <select><option value="">Selecione...</option><option>Indicação de cliente</option><option>Busca na internet</option><option>Redes sociais</option><option>Outro</option></select>
+        </div>
+        <div class="form-group"><label>Mensagem</label><textarea placeholder="Conte brevemente sua experiência com criptoativos e o que você está buscando..."></textarea></div>
+        <button class="btn-submit" id="btnSubmit">Enviar solicitação</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo-f">Vilapay Invest</span>
+      <small style="color:rgba(248,246,241,.3);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;">Criptoativos &amp; Operações Digitais</small>
+      <p>Conectamos você ao mercado de criptoativos com segurança, transparência e as melhores condições disponíveis.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="#" data-scroll="inicio">Início</a></li>
+        <li><a href="#" data-scroll="como-funciona">Como funciona</a></li>
+        <li><a href="#" data-scroll="por-que-nos">Por que nós</a></li>
+        <li><a href="#" data-scroll="seguranca">Segurança</a></li>
+        <li><a href="#" data-scroll="contato">Contato</a></li>
+        <li><a href="/login.html">Login</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Políticas</h4>
+      <ul>
+        <li><a href="#" data-scroll="politicas">Termos de Uso</a></li>
+        <li><a href="#" data-scroll="politicas">Compliance</a></li>
+        <li><a href="#" data-scroll="politicas">Regulamento</a></li>
+        <li><a href="#" data-scroll="politicas">LGPD</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="#" data-scroll="contato">Fale conosco</a></li>
+        <li><a href="#" data-scroll="cadastro-panel">Seja cliente</a></li>
+        <li><a href="#" data-scroll="contato">Suporte</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Vilapay Invest — Todos os direitos reservados</span>
+    <span>Operação em conformidade com a legislação vigente</span>
+  </div>
+</footer>
+
+<script>
+if(window.location.hash){
+  history.replaceState(null,'',window.location.pathname);
+}
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>20);
+});
+document.querySelectorAll('[data-scroll]').forEach(link=>{
+  link.addEventListener('click',event=>{
+    event.preventDefault();
+    const target=document.getElementById(link.dataset.scroll);
+    if(!target)return;
+    scrollToTarget(target);
+    if(link.dataset.scroll==='cadastro-panel'){
+      focusFirstInput(target);
+    }
+  });
+});
+function scrollToTarget(target,behavior='smooth'){
+  const nav=document.getElementById('navbar');
+  const offset=(nav?.offsetHeight||0)+24;
+  const top=target.getBoundingClientRect().top+window.pageYOffset-offset;
+  window.scrollTo({top:Math.max(top,0),behavior});
+}
+function focusFirstInput(target){
+  setTimeout(()=>{
+    const firstInput=target.querySelector('input');
+    if(firstInput)firstInput.focus({preventScroll:true});
+  },550);
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  const scrollParam=new URLSearchParams(window.location.search).get('scroll');
+  if(!scrollParam)return;
+  const target=document.getElementById(scrollParam);
+  if(!target)return;
+  setTimeout(()=>{
+    scrollToTarget(target,'smooth');
+    if(scrollParam==='cadastro-panel')focusFirstInput(target);
+    history.replaceState(null,'',window.location.pathname);
+  },150);
+});
+function polShow(id,btn){
+  document.querySelectorAll('.pol-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.pol-nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+document.getElementById('btnSubmit').addEventListener('click',function(){
+  this.textContent='Solicitação enviada ✓';
+  this.style.background='#2A8A50';
+  setTimeout(()=>{this.textContent='Enviar solicitação';this.style.background='';},3000);
+});
+document.getElementById('btnKyc').addEventListener('click',function(){
+  if(this.disabled)return;
+  const fields=[
+    {input:'cadNome',group:'cadNomeGroup',valid:v=>v.trim().split(/\s+/).length>=2},
+    {input:'cadCpf',group:'cadCpfGroup',valid:v=>v.replace(/\D/g,'').length===11},
+    {input:'cadEmail',group:'cadEmailGroup',valid:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},
+    {input:'cadPhone',group:'cadPhoneGroup',valid:v=>v.replace(/\D/g,'').length>=10},
+    {input:'cadPass',group:'cadPassGroup',valid:v=>v.length>=6},
+    {input:'cadConfirmPass',group:'cadConfirmPassGroup',valid:v=>v.length>=6&&v===document.getElementById('cadPass').value}
+  ];
+  let hasError=false;
+  fields.forEach(field=>{
+    const input=document.getElementById(field.input);
+    const group=document.getElementById(field.group);
+    const invalid=!field.valid(input.value);
+    group.classList.toggle('invalid',invalid);
+    if(invalid)hasError=true;
+  });
+  const status=document.getElementById('kycStatus');
+  const uploads=['docUpload','proofUpload','selfieUpload','incomeUpload'];
+  uploads.forEach(id=>{
+    const input=document.getElementById(id);
+    const box=input.closest('.upload-box');
+    const invalid=!(input.files&&input.files.length);
+    box.classList.toggle('invalid',invalid);
+    if(invalid)hasError=true;
+  });
+  if(hasError){
+    status.innerHTML='<strong>Status: cadastro incompleto</strong><p>Preencha todos os dados obrigatórios e anexe todos os documentos para enviar a análise.</p>';
+    status.style.borderColor='rgba(180,58,47,.25)';
+    status.style.background='#FFF7F5';
+    status.querySelector('strong').style.color='#B43A2F';
+    return;
+  }
+  saveLocalUser({
+    name:document.getElementById('cadNome').value.trim(),
+    document:document.getElementById('cadCpf').value.replace(/\D/g,''),
+    email:document.getElementById('cadEmail').value.trim(),
+    phone:document.getElementById('cadPhone').value.trim(),
+    password:document.getElementById('cadPass').value
+  });
+  status.style.borderColor='';
+  status.style.background='';
+  this.disabled=true;
+  this.textContent='Enviando para triagem...';
+  this.style.background='#7A5F18';
+  status.innerHTML='<strong>Status: documentos recebidos</strong><p>Seus arquivos foram anexados e o cadastro entrou na etapa de conferência inicial.</p>';
+  status.querySelector('strong').style.color='';
+  setTimeout(()=>{
+    status.innerHTML='<strong>Status: em análise cadastral</strong><p>Nossa equipe avalia autenticidade, titularidade e conformidade das informações enviadas.</p>';
+  },1100);
+  setTimeout(()=>{
+    status.innerHTML='<strong>Status: pré-cadastro enviado ✓</strong><p>Após a pré-validação, você receberá um e-mail para continuar o cadastro e concluir a verificação KYC em 2 etapas, incluindo selfie de segurança.</p><p id="resetCountdown">Limpeza automática em 5 segundos.</p>';
+    this.textContent='Cadastro enviado ✓';
+    this.style.background='#2A8A50';
+    startKycResetCountdown(this,status);
+  },2400);
+});
+function startKycResetCountdown(button,status){
+  let seconds=5;
+  const countdown=document.getElementById('resetCountdown');
+  const timer=setInterval(()=>{
+    seconds-=1;
+    if(countdown)countdown.textContent='Limpeza automática em '+seconds+' segundo'+(seconds===1?'':'s')+'.';
+    if(seconds>0)return;
+    clearInterval(timer);
+    resetKycForm(button,status);
+  },1000);
+}
+function resetKycForm(button,status){
+  const form=document.querySelector('.kyc-form');
+  form.classList.add('is-resetting');
+  setTimeout(()=>{
+    ['cadNome','cadCpf','cadEmail','cadPhone','cadPass','cadConfirmPass'].forEach(id=>{
+      const input=document.getElementById(id);
+      input.value='';
+      input.closest('.form-group')?.classList.remove('invalid');
+      if(input.type==='text'&&input.id.includes('Pass'))input.type='password';
+    });
+    document.querySelectorAll('.toggle-pass').forEach(btn=>setToggleIcon(btn,false));
+    document.querySelectorAll('.upload-box').forEach(box=>{
+      const input=box.querySelector('input[type="file"]');
+      const preview=box.querySelector('.upload-preview');
+      input.value='';
+      preview.innerHTML='';
+      box.classList.remove('uploaded','invalid');
+    });
+    status.innerHTML='<strong>Status do cadastro: aguardando documentos</strong><p>Preencha os dados e selecione os arquivos para iniciar sua análise cadastral.</p>';
+    status.style.borderColor='';
+    status.style.background='';
+    status.querySelector('strong').style.color='';
+    button.textContent='Enviar cadastro para análise';
+    button.style.background='';
+    button.disabled=false;
+    form.classList.remove('is-resetting');
+  },350);
+}
+function saveLocalUser(user){
+  let users=[];
+  try{users=JSON.parse(localStorage.getItem('vilapay-users')||'[]')}catch{users=[]}
+  const existingIndex=users.findIndex(item=>item.document===user.document);
+  const payload={...user,createdAt:new Date().toISOString()};
+  if(existingIndex>=0)users[existingIndex]=payload;
+  else users.push(payload);
+  localStorage.setItem('vilapay-users',JSON.stringify(users));
+}
+function maskCpf(value){
+  return value.replace(/\D/g,'').slice(0,11).replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+}
+function maskPhone(value){
+  const d=value.replace(/\D/g,'').slice(0,11);
+  if(d.length<=10)return d.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{4})(\d)/,'$1-$2');
+  return d.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');
+}
+['cadNome','cadCpf','cadEmail','cadPhone','cadPass','cadConfirmPass'].forEach(id=>document.getElementById(id).addEventListener('input',function(){
+  if(id==='cadCpf')this.value=maskCpf(this.value);
+  if(id==='cadPhone')this.value=maskPhone(this.value);
+  document.getElementById(id.replace('cad','cad')+'Group')?.classList.remove('invalid');
+  if(id==='cadPass'||id==='cadConfirmPass')document.getElementById('cadConfirmPassGroup').classList.remove('invalid');
+}));
+const eyeOpen='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.75"/></svg>';
+const eyeClosed='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6A2 2 0 0 0 13.4 13.4"/><path d="M7.1 7.6C4.2 9.2 2.5 12 2.5 12s3.5 6 9.5 6c1.5 0 2.8-.35 4-.9"/><path d="M14.2 6.25C18.8 7.15 21.5 12 21.5 12s-.9 1.55-2.55 3.05"/></svg>';
+function setToggleIcon(btn,isVisible){
+  btn.innerHTML=isVisible?eyeClosed:eyeOpen;
+  btn.setAttribute('aria-label',isVisible?'Ocultar senha':'Mostrar senha');
+}
+document.querySelectorAll('.toggle-pass').forEach(btn=>{
+  setToggleIcon(btn,false);
+  btn.addEventListener('click',()=>{
+    const input=document.getElementById(btn.dataset.target);
+    const isVisible=input.type==='password';
+    input.type=isVisible?'text':'password';
+    setToggleIcon(btn,isVisible);
+  });
+});
+document.querySelectorAll('.upload-box input[type="file"]').forEach(input=>input.addEventListener('change',function(){
+  const box=this.closest('.upload-box');
+  const preview=box.querySelector('.upload-preview');
+  const file=this.files&&this.files[0];
+  if(!file){
+    box.classList.remove('uploaded');
+    box.classList.add('invalid');
+    preview.innerHTML='';
+    return;
+  }
+  box.classList.add('uploaded');
+  box.classList.remove('invalid');
+  const size=(file.size/1024/1024).toFixed(2);
+  if(file.type.startsWith('image/')){
+    const reader=new FileReader();
+    reader.onload=()=>{preview.innerHTML='<img src="'+reader.result+'" alt="Prévia do arquivo"><strong>Arquivo anexado ✓</strong><br>'+file.name+' · '+size+' MB'};
+    reader.readAsDataURL(file);
+  }else{
+    preview.innerHTML='<strong>Arquivo anexado ✓</strong><br>'+file.name+' · '+size+' MB';
+  }
+}));
+</script>
+</body>
 </html>

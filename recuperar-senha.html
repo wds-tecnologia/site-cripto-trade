@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recuperar senha — Vilapay Invest</title>
+<link rel="icon" type="image/png" href="/logobrowser.png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#F8F6F1;--bg2:#fff;--gold:#B8912A;--gold3:#7A5F18;--text:#1A1714;--text2:#4A4540;--text3:#8A8178;--border:rgba(184,145,42,.16);--border2:rgba(184,145,42,.32);--shadow:0 18px 50px rgba(26,23,20,.09)}
+body{min-height:100vh;background:linear-gradient(135deg,#F8F6F1 0%,#FDF8EC 50%,#F0EDE4 100%);color:var(--text);font-family:'Sora',sans-serif;font-weight:300;line-height:1.7}
+.page{min-height:100vh;display:flex;flex-direction:column}.nav{height:68px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(248,246,241,.94);backdrop-filter:blur(12px)}
+.logo{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:500;color:var(--gold);letter-spacing:.04em;text-decoration:none}.logo span{font-family:'Sora',sans-serif;font-size:.6rem;font-weight:400;letter-spacing:.2em;color:var(--text3);display:block;text-transform:uppercase;margin-top:-4px}
+.nav a.back{color:var(--text2);font-size:.82rem;text-decoration:none}.nav a.back:hover{color:var(--gold)}
+.wrap{flex:1;display:grid;place-items:center;padding:4rem 5%}.card{width:100%;max-width:430px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:2.2rem;box-shadow:var(--shadow)}
+.tag{display:inline-block;background:rgba(184,145,42,.08);border:1px solid var(--border2);color:var(--gold3);font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;padding:.3rem .85rem;margin-bottom:1rem}
+h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:500;line-height:1.2;margin-bottom:.5rem}p{font-size:.88rem;color:var(--text2);margin-bottom:1.6rem}
+.form-group{margin-bottom:1rem}.form-group label{display:block;font-size:.72rem;font-weight:500;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
+.form-group input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Sora',sans-serif;font-size:.88rem;padding:.82rem 1rem;outline:none;transition:border-color .2s}.form-group input:focus{border-color:var(--gold)}
+.field-error{display:none;margin-top:.35rem;color:#B43A2F;font-size:.72rem;line-height:1.5}.form-group.invalid input{border-color:#B43A2F;background:#FFF7F5}.form-group.invalid .field-error{display:block}
+.btn{background:var(--gold);color:#fff;border:none;border-radius:4px;cursor:pointer;font-family:'Sora',sans-serif;font-size:.9rem;font-weight:600;padding:.95rem 2rem;width:100%;letter-spacing:.04em;transition:background .2s;margin-top:.35rem}.btn:hover{background:var(--gold3)}
+.link{display:block;margin-top:1.2rem;text-align:center;color:var(--gold3);font-size:.82rem;text-decoration:none}.link:hover{text-decoration:underline}
+.status{display:none;border:1px solid rgba(42,138,80,.2);background:rgba(42,138,80,.07);border-radius:10px;padding:1rem;margin-top:1rem}.status strong{font-size:.82rem;color:#2A8A50}.status p{font-size:.78rem;margin:.25rem 0 0;color:var(--text2)}
+@media(max-width:560px){.card{padding:1.5rem}.nav{padding:0 1rem}}
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="logo">Vilapay Invest<span>Criptoativos &amp; Operações Digitais</span></a>
+    <a href="/login.html" class="back">Voltar ao login</a>
+  </nav>
+  <main class="wrap">
+    <section class="card">
+      <div class="tag">Recuperação de acesso</div>
+      <h1>Recupere sua senha</h1>
+      <p>Informe o documento ou e-mail cadastrado para receber as instruções de recuperação pelos canais oficiais.</p>
+      <div class="form-group" id="recoverGroup"><label>Documento ou e-mail</label><input type="text" id="recoverInput" placeholder="CPF, CNPJ ou e-mail"><span class="field-error">Informe um e-mail válido ou CPF/CNPJ válido.</span></div>
+      <button class="btn" id="btnRecover">Enviar instruções</button>
+      <div class="status" id="recoverStatus"><strong>Solicitação recebida</strong><p>As instruções serão encaminhadas para o contato cadastrado.</p></div>
+      <a href="/login.html" class="link">Voltar para o login</a>
+    </section>
+  </main>
+</div>
+<script>
+function maskCpfCnpj(value){
+  const d=value.replace(/\D/g,'').slice(0,14);
+  if(d.length<=11)return d.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+  return d.replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3').replace(/\.(\d{3})(\d)/,'.$1/$2').replace(/(\d{4})(\d{1,2})$/,'$1-$2');
+}
+function isValidRecoverValue(value){
+  const clean=value.trim();
+  if(/[@a-zA-Z]/.test(clean))return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean);
+  const digits=clean.replace(/\D/g,'');
+  return digits.length===11||digits.length===14;
+}
+document.getElementById('recoverInput').addEventListener('input',function(){
+  if(!/[@a-zA-Z]/.test(this.value))this.value=maskCpfCnpj(this.value);
+  document.getElementById('recoverGroup').classList.remove('invalid');
+});
+document.getElementById('btnRecover').addEventListener('click',function(){
+  const input=document.getElementById('recoverInput');
+  const group=document.getElementById('recoverGroup');
+  const invalid=!isValidRecoverValue(input.value);
+  group.classList.toggle('invalid',invalid);
+  if(invalid)return;
+  const status=document.getElementById('recoverStatus');
+  status.style.display='block';
+  this.textContent='Enviando instruções...';
+  this.style.background='#7A5F18';
+  setTimeout(()=>{
+    this.textContent='Instruções enviadas';
+    this.style.background='#2A8A50';
+  },1200);
+});
+</script>
+</body>
+</html>
