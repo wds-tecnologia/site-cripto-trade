@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Vilapay Invest</title>
+<link rel="icon" type="image/png" href="/logobrowser.png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#F8F6F1;--bg2:#fff;--gold:#B8912A;--gold3:#7A5F18;--gold-pale:#FDF8EC;--text:#1A1714;--text2:#4A4540;--text3:#8A8178;--border:rgba(184,145,42,.16);--border2:rgba(184,145,42,.32);--shadow:0 18px 50px rgba(26,23,20,.09)}
+body{min-height:100vh;background:linear-gradient(135deg,#F8F6F1 0%,#FDF8EC 50%,#F0EDE4 100%);color:var(--text);font-family:'Sora',sans-serif;font-weight:300;line-height:1.7}
+.page{min-height:100vh;display:flex;flex-direction:column}
+.nav{height:68px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(248,246,241,.94);backdrop-filter:blur(12px)}
+.logo{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:500;color:var(--gold);letter-spacing:.04em;text-decoration:none}.logo span{font-family:'Sora',sans-serif;font-size:.6rem;font-weight:400;letter-spacing:.2em;color:var(--text3);display:block;text-transform:uppercase;margin-top:-4px}
+.nav a.back{color:var(--text2);font-size:.82rem;text-decoration:none}.nav a.back:hover{color:var(--gold)}
+.wrap{flex:1;display:grid;place-items:center;padding:4rem 5%}
+.card{width:100%;max-width:430px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:2.2rem;box-shadow:var(--shadow)}
+.tag{display:inline-block;background:rgba(184,145,42,.08);border:1px solid var(--border2);color:var(--gold3);font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;padding:.3rem .85rem;margin-bottom:1rem}
+h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:500;line-height:1.2;margin-bottom:.5rem}p{font-size:.88rem;color:var(--text2);margin-bottom:1.6rem}
+.form-group{margin-bottom:1rem}.form-group label{display:block;font-size:.72rem;font-weight:500;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
+.form-group input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Sora',sans-serif;font-size:.88rem;padding:.82rem 1rem;outline:none;transition:border-color .2s}.form-group input:focus{border-color:var(--gold)}
+.input-wrap{position:relative}.input-wrap input{padding-right:3.2rem}.toggle-pass{position:absolute;right:0;top:0;height:100%;width:2.75rem;border:0;background:transparent;cursor:pointer;color:var(--text3);display:flex;align-items:center;justify-content:center;padding:0;transition:color .2s}.toggle-pass:hover{color:var(--gold3)}.toggle-pass svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.field-error{display:none;margin-top:.35rem;color:#B43A2F;font-size:.72rem;line-height:1.5}.form-group.invalid input{border-color:#B43A2F;background:#FFF7F5}.form-group.invalid .field-error{display:block}
+.btn{background:var(--gold);color:#fff;border:none;border-radius:4px;cursor:pointer;font-family:'Sora',sans-serif;font-size:.9rem;font-weight:600;padding:.95rem 2rem;width:100%;letter-spacing:.04em;transition:background .2s;margin-top:.35rem}.btn:hover{background:var(--gold3)}
+.links{display:flex;justify-content:space-between;gap:1rem;margin-top:1.2rem;font-size:.8rem}.links a{color:var(--gold3);text-decoration:none}.links a:hover{text-decoration:underline}
+.status{display:none;border:1px solid rgba(42,138,80,.2);background:rgba(42,138,80,.07);border-radius:10px;padding:1rem;margin-top:1rem}.status strong{font-size:.82rem;color:#2A8A50}.status p{font-size:.78rem;margin:.25rem 0 0;color:var(--text2)}.status.error{border-color:rgba(180,58,47,.25);background:#FFF7F5}.status.error strong{color:#B43A2F}.status.warn{border-color:rgba(184,145,42,.35);background:#FDF8EC}.status.warn strong{color:var(--gold3)}
+@media(max-width:560px){.card{padding:1.5rem}.links{flex-direction:column}.nav{padding:0 1rem}}
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="logo">Vilapay Invest<span>Criptoativos &amp; Operações Digitais</span></a>
+    <a href="/" class="back">Voltar ao site</a>
+  </nav>
+  <main class="wrap">
+    <section class="card">
+      <div class="tag">Área segura</div>
+      <h1>Acesse sua conta</h1>
+      <p>Entre com o documento cadastrado e sua senha para acompanhar solicitações, limites e operações.</p>
+      <div class="form-group" id="docGroup"><label>Documento do usuário</label><input type="text" id="loginDoc" placeholder="CPF ou CNPJ" inputmode="numeric" maxlength="18"><span class="field-error">Informe um CPF ou CNPJ válido.</span></div>
+      <div class="form-group" id="passGroup"><label>Senha</label><div class="input-wrap"><input type="password" id="loginPass" placeholder="Digite sua senha" minlength="6"><button type="button" class="toggle-pass" data-target="loginPass" aria-label="Mostrar senha"></button></div><span class="field-error">A senha deve ter pelo menos 6 caracteres.</span></div>
+      <button class="btn" id="btnLogin">Entrar na minha conta</button>
+      <div class="status" id="loginStatus"><strong>Status: acesso solicitado</strong><p>Estamos processando as credenciais informadas.</p></div>
+      <div class="links">
+        <a href="/recuperar-senha.html">Recuperar senha</a>
+        <a href="/?scroll=cadastro-panel">Criar cadastro</a>
+      </div>
+    </section>
+  </main>
+</div>
+<script>
+document.getElementById('btnLogin').addEventListener('click',function(){
+  const doc=document.getElementById('loginDoc');
+  const pass=document.getElementById('loginPass');
+  const docGroup=document.getElementById('docGroup');
+  const passGroup=document.getElementById('passGroup');
+  const docDigits=doc.value.replace(/\D/g,'');
+  docGroup.classList.toggle('invalid',!(docDigits.length===11||docDigits.length===14));
+  passGroup.classList.toggle('invalid',pass.value.length<6);
+  if(docGroup.classList.contains('invalid')||passGroup.classList.contains('invalid'))return;
+  const status=document.getElementById('loginStatus');
+  const users=getStoredUsers();
+  const user=users.find(item=>item.document===docDigits);
+  const attempts=getLoginAttempts();
+  const currentAttempts=attempts[docDigits]||0;
+  if(!user){
+    setLoginStatus('error','Usuário não encontrado','Usuário não encontrado na base de dados. Confira o documento ou crie um cadastro.');
+    resetLoginButton(this);
+    return;
+  }
+  if(currentAttempts>=3){
+    setLoginStatus('error','Acesso bloqueado','Usuário bloqueado após 3 tentativas inválidas. Use a recuperação de senha para continuar.');
+    this.textContent='Acesso bloqueado';
+    this.style.background='#B43A2F';
+    return;
+  }
+  if(user.password!==pass.value){
+    const nextAttempts=currentAttempts+1;
+    attempts[docDigits]=nextAttempts;
+    localStorage.setItem('vilapay-login-attempts',JSON.stringify(attempts));
+    if(nextAttempts>=3){
+      setLoginStatus('error','Acesso bloqueado','Usuário bloqueado após 3 tentativas inválidas. Use a recuperação de senha para continuar.');
+      this.textContent='Acesso bloqueado';
+      this.style.background='#B43A2F';
+      return;
+    }
+    setLoginStatus('warn','Login ou senha inválidos','Tente novamente. Você ainda tem '+(3-nextAttempts)+' tentativa(s) antes do bloqueio.');
+    resetLoginButton(this);
+    return;
+  }
+  delete attempts[docDigits];
+  localStorage.setItem('vilapay-login-attempts',JSON.stringify(attempts));
+  status.style.display='block';
+  status.className='status';
+  this.textContent='Validando acesso...';
+  this.style.background='#7A5F18';
+  setTimeout(()=>{
+    status.innerHTML='<strong>Status: acesso em processamento</strong><p>Solicitação recebida. A integração com autenticação será conectada ao backend.</p>';
+    this.textContent='Acesso em processamento';
+    this.style.background='#2A8A50';
+  },1200);
+});
+function getStoredUsers(){
+  try{return JSON.parse(localStorage.getItem('vilapay-users')||'[]')}catch{return []}
+}
+function getLoginAttempts(){
+  try{return JSON.parse(localStorage.getItem('vilapay-login-attempts')||'{}')}catch{return {}}
+}
+function setLoginStatus(type,title,message){
+  const status=document.getElementById('loginStatus');
+  status.className='status '+type;
+  status.style.display='block';
+  status.innerHTML='<strong>'+title+'</strong><p>'+message+'</p>';
+}
+function resetLoginButton(button){
+  button.textContent='Entrar na minha conta';
+  button.style.background='';
+}
+function maskCpfCnpj(value){
+  const d=value.replace(/\D/g,'').slice(0,14);
+  if(d.length<=11)return d.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+  return d.replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3').replace(/\.(\d{3})(\d)/,'.$1/$2').replace(/(\d{4})(\d{1,2})$/,'$1-$2');
+}
+document.getElementById('loginDoc').addEventListener('input',function(){this.value=maskCpfCnpj(this.value);document.getElementById('docGroup').classList.remove('invalid')});
+document.getElementById('loginPass').addEventListener('input',function(){document.getElementById('passGroup').classList.remove('invalid')});
+const eyeOpen='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.75"/></svg>';
+const eyeClosed='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6A2 2 0 0 0 13.4 13.4"/><path d="M7.1 7.6C4.2 9.2 2.5 12 2.5 12s3.5 6 9.5 6c1.5 0 2.8-.35 4-.9"/><path d="M14.2 6.25C18.8 7.15 21.5 12 21.5 12s-.9 1.55-2.55 3.05"/></svg>';
+function setToggleIcon(btn,isVisible){
+  btn.innerHTML=isVisible?eyeClosed:eyeOpen;
+  btn.setAttribute('aria-label',isVisible?'Ocultar senha':'Mostrar senha');
+}
+document.querySelectorAll('.toggle-pass').forEach(btn=>{
+  setToggleIcon(btn,false);
+  btn.addEventListener('click',()=>{
+    const input=document.getElementById(btn.dataset.target);
+    const isVisible=input.type==='password';
+    input.type=isVisible?'text':'password';
+    setToggleIcon(btn,isVisible);
+  });
+});
+</script>
+</body>
+</html>
