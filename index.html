@@ -29,6 +29,20 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;font-w
 .btn-nav:hover{background:var(--gold3)!important}
 .btn-login{border:1px solid var(--border2);color:var(--gold3)!important;padding:.48rem 1.15rem;border-radius:4px;font-size:.8rem!important;font-weight:500!important;background:var(--gold-pale)}
 .btn-login:hover{background:#FFF3D0;color:var(--gold3)!important}
+.mobile-menu-btn{display:none;width:42px;height:42px;border:1px solid var(--border2);border-radius:8px;background:var(--gold-pale);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;padding:0}
+.mobile-menu-btn span{width:18px;height:2px;background:var(--gold3);border-radius:999px;transition:transform .25s,opacity .25s}
+.mobile-menu-btn.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.mobile-menu-btn.active span:nth-child(2){opacity:0}
+.mobile-menu-btn.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-nav{display:none;position:fixed;top:68px;left:0;right:0;z-index:999;background:rgba(248,246,241,.98);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);box-shadow:var(--shadow);padding:1rem 5% 1.25rem;transform:translateY(-12px);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+.mobile-nav.active{opacity:1;transform:translateY(0);pointer-events:auto}
+.mobile-nav a{display:block;color:var(--text2);text-decoration:none;font-size:.9rem;font-weight:500;padding:.85rem 0;border-bottom:1px solid rgba(184,145,42,.12)}
+.mobile-nav a:last-child{border-bottom:none}
+.mobile-nav a:hover{color:var(--gold3)}
+.mobile-nav .mobile-actions{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1rem}
+.mobile-nav .mobile-actions a{text-align:center;border:1px solid var(--border2);border-radius:6px;padding:.8rem .7rem}
+.mobile-nav .mobile-actions .mobile-login{background:var(--gold-pale);color:var(--gold3)}
+.mobile-nav .mobile-actions .mobile-register{background:var(--gold);color:#fff;border-color:var(--gold)}
 
 /* HERO */
 .hero{min-height:100vh;display:flex;align-items:center;padding:100px 5% 5rem;position:relative;overflow:visible}
@@ -198,6 +212,8 @@ section{padding:5rem 5%}
 /* RESPONSIVE */
 @media(max-width:768px){
   .nav-links{display:none}
+  .mobile-menu-btn{display:flex}
+  .mobile-nav{display:block}
   .hero{padding:88px 5% 3rem}
   .hero-content{grid-template-columns:1fr;gap:1.5rem}
   .hero-phone{margin-top:0}
@@ -222,7 +238,23 @@ section{padding:5rem 5%}
     <li><a href="/login.html" class="btn-login">Login</a></li>
     <li><a href="#" data-scroll="cadastro-panel" class="btn-nav">Criar cadastro</a></li>
   </ul>
+  <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="#" data-scroll="como-funciona">Como funciona</a>
+  <a href="#" data-scroll="por-que-nos">Por que nós</a>
+  <a href="#" data-scroll="seguranca">Segurança</a>
+  <a href="#" data-scroll="politicas">Políticas</a>
+  <a href="#" data-scroll="contato">Contato</a>
+  <div class="mobile-actions">
+    <a href="/login.html" class="mobile-login">Login</a>
+    <a href="#" data-scroll="cadastro-panel" class="mobile-register">Criar cadastro</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero" id="inicio">
@@ -791,9 +823,24 @@ if(window.location.hash){
 window.addEventListener('scroll',()=>{
   document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>20);
 });
+const mobileMenuBtn=document.getElementById('mobileMenuBtn');
+const mobileNav=document.getElementById('mobileNav');
+function closeMobileMenu(){
+  mobileMenuBtn?.classList.remove('active');
+  mobileNav?.classList.remove('active');
+  mobileMenuBtn?.setAttribute('aria-expanded','false');
+  mobileMenuBtn?.setAttribute('aria-label','Abrir menu');
+}
+mobileMenuBtn?.addEventListener('click',()=>{
+  const isOpen=mobileNav.classList.toggle('active');
+  mobileMenuBtn.classList.toggle('active',isOpen);
+  mobileMenuBtn.setAttribute('aria-expanded',String(isOpen));
+  mobileMenuBtn.setAttribute('aria-label',isOpen?'Fechar menu':'Abrir menu');
+});
 document.querySelectorAll('[data-scroll]').forEach(link=>{
   link.addEventListener('click',event=>{
     event.preventDefault();
+    closeMobileMenu();
     const target=document.getElementById(link.dataset.scroll);
     if(!target)return;
     scrollToTarget(target);
